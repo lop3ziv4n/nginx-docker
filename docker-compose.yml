@@ -1,0 +1,8 @@
+nginx:
+  container_name: nginx
+  image: nginx
+  volumes:
+    - /usr/local/nginx-docker/log:/var/log/nginx
+#   - /home/debian/nginx-docker/log:/var/log/nginx
+  ports:
+    - "8980:8980"
