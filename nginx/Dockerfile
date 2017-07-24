@@ -1,14 +1,12 @@
-# Pull base image
 FROM nginx
 
-# Environment variables required for this build
-ENV SIDCA_TCP=8980
+#Enviroment variable
+ENV NGINX_TEMPLATE nginx
 
+RUN mkdir -p /etc/nginx/templates.d
 # Add files required to build this image
-COPY config/nginx.conf /etc/nginx/nginx.conf
+COPY ./config/*.template /etc/nginx/templates.d/
 
-# Default http port
-EXPOSE $SIDCA_TCP
+RUN rm /etc/nginx/conf.d/default.conf
 
-# Volumes from native host
-VOLUME ["/var/log/nginx"]
+CMD ["/bin/bash", "-c", "envsubst < /etc/nginx/templates.d/${NGINX_TEMPLATE}.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
