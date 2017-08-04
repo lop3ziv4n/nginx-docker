@@ -1,7 +1,7 @@
 version: "2"
 
 services:
-  nginx:
+  nginx-sidca:
     container_name: sidca-ensemble_container
     image: ensemble/nginx
     restart: always
@@ -11,11 +11,131 @@ services:
       - NGINX_SERVER_NAME=sidca-ensemble
       - NGINX_SERVER_PORT=8080
       - NGINX_FILE_LOG=sidca-ensemble.log
-      - NGINX_NODE_1=172.16.1.98:1980
-      - NGINX_NODE_2=172.16.1.119:1980
-      - NGINX_URL=fleni.evr.servicios.EsbWSSoap
+      - NGINX_NODE_1=172.16.1.101:1980
+      - NGINX_NODE_2=172.16.1.97:1980
+      - NGINX_URL=csp/fleni/fleni.evr.servicios.EsbWSSoap
     ports:
       - "8080:8080"
+    volumes:
+      - ngnix-storage:/var/log/nginx
+    networks:
+      - nginx-tier
+
+  nginx-his:
+    container_name: his-ensemble_container
+    image: ensemble/nginx
+    restart: always
+    build: .
+    environment:
+      - NGINX_TEMPLATE=nginx
+      - NGINX_SERVER_NAME=his-ensemble
+      - NGINX_SERVER_PORT=8081
+      - NGINX_FILE_LOG=his-ensemble.log
+      - NGINX_NODE_1=172.16.1.101:1981
+      - NGINX_NODE_2=172.16.1.97:1981
+      - NGINX_URL=csp/fleni/fleni.evr.servicios.EsbWSSoap
+    ports:
+      - "8081:8081"
+    volumes:
+      - ngnix-storage:/var/log/nginx
+    networks:
+      - nginx-tier
+
+  nginx-ris:
+    container_name: ris-ensemble_container
+    image: ensemble/nginx
+    restart: always
+    build: .
+    environment:
+      - NGINX_TEMPLATE=nginx
+      - NGINX_SERVER_NAME=ris-ensemble
+      - NGINX_SERVER_PORT=8082
+      - NGINX_FILE_LOG=ris-ensemble.log
+      - NGINX_NODE_1=172.16.1.101:1982
+      - NGINX_NODE_2=172.16.1.97:1982
+      - NGINX_URL=csp/fleni/fleni.evr.servicios.EsbWSSoap
+    ports:
+      - "8082:8082"
+    volumes:
+      - ngnix-storage:/var/log/nginx
+    networks:
+      - nginx-tier
+
+  nginx-farmacia:
+    container_name: farmacia-ensemble_container
+    image: ensemble/nginx
+    restart: always
+    build: .
+    environment:
+      - NGINX_TEMPLATE=nginx
+      - NGINX_SERVER_NAME=farmacia-ensemble
+      - NGINX_SERVER_PORT=8083
+      - NGINX_FILE_LOG=farmacia-ensemble.log
+      - NGINX_NODE_1=172.16.1.101:1983
+      - NGINX_NODE_2=172.16.1.97:1983
+      - NGINX_URL=csp/fleni/fleni.evr.servicios.EsbWSSoap
+    ports:
+      - "8083:8083"
+    volumes:
+      - ngnix-storage:/var/log/nginx
+    networks:
+      - nginx-tier
+
+  nginx-find_candidates:
+    container_name: find_candidates-ensemble_container
+    image: ensemble/nginx
+    restart: always
+    build: .
+    environment:
+      - NGINX_TEMPLATE=nginx
+      - NGINX_SERVER_NAME=find_candidates-ensemble
+      - NGINX_SERVER_PORT=8084
+      - NGINX_FILE_LOG=find_candidates-ensemble.log
+      - NGINX_NODE_1=172.16.1.101:1994
+      - NGINX_NODE_2=172.16.1.97:1994
+      - NGINX_URL=csp/fleni/fleni.evr.servicios.ehCOS.ehEMPIv2.FindCandWS.Service.RemotingFindCandServiceEndPointPort.cls
+    ports:
+      - "8084:8084"
+    volumes:
+      - ngnix-storage:/var/log/nginx
+    networks:
+      - nginx-tier
+
+  nginx-ehcos:
+    container_name: ehcos-ensemble_container
+    image: ensemble/nginx
+    restart: always
+    build: .
+    environment:
+      - NGINX_TEMPLATE=nginx
+      - NGINX_SERVER_NAME=ehcos-ensemble
+      - NGINX_SERVER_PORT=8085
+      - NGINX_FILE_LOG=ehcos-ensemble.log
+      - NGINX_NODE_1=172.16.1.101:1992
+      - NGINX_NODE_2=172.16.1.97:1992
+      - NGINX_URL=csp/fleni/fleni.evr.servicios.ehCOS.ehEMPI.QueueListener.Service.EsbMQListener
+    ports:
+      - "8085:8085"
+    volumes:
+      - ngnix-storage:/var/log/nginx
+    networks:
+      - nginx-tier
+
+  nginx-astm_lab:
+    container_name: astm_lab-ensemble_container
+    image: ensemble/nginx
+    restart: always
+    build: .
+    environment:
+      - NGINX_TEMPLATE=nginx
+      - NGINX_SERVER_NAME=astm_lab-ensemble
+      - NGINX_SERVER_PORT=8086
+      - NGINX_FILE_LOG=astm_lab-ensemble.log
+      - NGINX_NODE_1=172.16.1.101:10002
+      - NGINX_NODE_2=172.16.1.97:10002
+      - NGINX_URL=csp/fleni/fleni.evr.servicios.EsbWSSoap
+    ports:
+      - "8086:8086"
     volumes:
       - ngnix-storage:/var/log/nginx
     networks:
